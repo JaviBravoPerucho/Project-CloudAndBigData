@@ -24,6 +24,8 @@ Spark DataFrames provide a high-level abstraction for working with structured da
 will use Google Cloud Dataproc clusters to process the dataset and Google Cloud Storage to store the results and scripts. I will use a Debian-based Virtual Machine to 
 test the application locally before deploying it to the cloud.
 
+Exercise 1: Best 10 shooters from the NBA using a formula that combines statistics.
+
 ## Software design (architectural design, code baseline, dependencies…)
 ## Usage (including screenshots that demonstrate how it works).
 ## Performance evaluation (speed-up) on the Cloud and discussion about identified overheads and optimizations done.
