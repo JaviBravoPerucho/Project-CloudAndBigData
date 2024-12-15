@@ -68,9 +68,23 @@ to write an article about it.
 
 This should be the output in the console:
 
-[rank](/screenshots/10best_scorers.png)
+![](/screenshots/10best_scorers.png)
 
 ## Performance evaluation (speed-up) on the Cloud and discussion about identified overheads and optimizations done.
+
+### Locally:
+First operation: spark-submit --master local[x] scoring_stats.py play_by_play.csv scoring_stats
+1 Thread : 96.84541583061218 seconds
+2 Threads : 59.42380690574646 seconds
+4 Threads : 61.581401348114014 seconds
+
+Second: spark-submit --master local[x] best_scorers.py scoring_stats/*
+1 Thread : 8.652909517288208 seconds
+2 Threads : 8.245720863342285 seconds
+4 Threads : 8.075222492218018 seconds
+
+### With dataproc clusters:
+
 ## Advanced features, like tools/models/platforms not explained in class, advanced functions, techniques to mitigate overheads, challenging implementation aspects...
 ## Conclusions, including goals achieved, improvements suggested, lessons learnt, future work, interesting insights…
 ## References.
