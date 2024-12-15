@@ -1,10 +1,12 @@
 import sys
 import re
-
+import time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, count, round
 
-def extract_shooting_stats(input_path, output_path)
+def extract_shooting_stats(input_path, output_path):
+
+    start_time = time.time()
 
     # Initialize Spark session
     spark = SparkSession.builder \
@@ -28,6 +30,9 @@ def extract_shooting_stats(input_path, output_path)
 
     # Save the result to a CSV file
     stats_df.write.option("header", "true").csv(output_path)
+
+    end_time = time.time()
+    print(f"Execution Time: {end_time - start_time} seconds")
 
 if len(sys.argv) != 3:
     print("Usage: extract_shooting_stats <input> <output>")

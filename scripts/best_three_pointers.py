@@ -1,9 +1,12 @@
 import sys
 import re
+import time
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
 def best_three_pointers(input_path, num_players):
+
+    start_time = time.time()
 
    # Initialize Spark session
     spark = SparkSession.builder \
@@ -24,6 +27,9 @@ def best_three_pointers(input_path, num_players):
 
     # Show the results
     top_scorers.select("player1_name", "3pm", "3pa", "3p_pct", "scoring_metric").show()
+
+    end_time = time.time()
+    print(f"Execution time: {end_time - start_time} seconds")
 
 if len(sys.argv) != 3:
     print("Usage: best_three_pointers <input> <num_players>")

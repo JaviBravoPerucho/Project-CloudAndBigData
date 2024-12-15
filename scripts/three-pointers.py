@@ -1,10 +1,12 @@
 import sys
 import re
-
+improt time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, count, round, sum
 
 def extract_three_point_stats(input_path, output_path):
+
+    start_time = time.time()
 
     # Initialize Spark session
     spark = SparkSession.builder \
@@ -32,6 +34,9 @@ def extract_three_point_stats(input_path, output_path):
 
     # Save the result to a CSV file
     three_point_stats.write.option("header", "true").csv(output_path)
+
+    end_time = time.time()
+    print(f"Execution time: {end_time - start_time} seconds")
 
 if len(sys.argv) != 3:
     print("Usage: extract_three_point_stats <input> <output>")
