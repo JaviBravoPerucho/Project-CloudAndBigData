@@ -3,28 +3,39 @@
 <h2 align="center"><b>Javier Bravo Perucho</b></h2>
 
 ## Description of the problem
-Analyze and manipulate data from a database about the NBA to get information about shooting statistics and player performance.
+Analyze and manipulate data from a database about the NBA to get information about scoring statistics and player performance.
 
 ## Need for Big Data processing and Cloud Computing.
 I need to collect a lot of data about NBA players and seasons to classify players and analyze their performance through the years. I will use a database
-from Kaggle that has 2.35 GB, and to search through it I will need to use libraries like Pandas and Spark. It takes a lot of time to process
+from Kaggle that has 2.35 GB, and to manipulate it I will use Spark dataframes. It takes a lot of time to process
 such a big database with information about each basketball game and each player, so using resources from Cloud Computing like Dataproc clusters and Cloud storage
 buckets will help me do it faster. 
 
 ## Description of the data: Where does it come from? How was it acquired? What does it mean? What format is it? How big is it (1 GB minimum)?
-It is an SQLite database from Kaggle which contains information about 30 teams, 4800+ players and 65000+ games (every game since the NBA started). Its size 
-is 2.35 GB and it has 11 tables: common_player_info, draft_combine_stats, draft_history, game, game_info, game_summary, inactive_players, line_score, officials,
-other_stats and play_by_play. The most useful ones to me will probably be common_player_info, game, game_info and play_by_play.
+It is an database from Kaggle which contains information about 30 teams, 4800+ players and 65000+ games (every game since the NBA started). Its size 
+is 2.35 GB and it contains 11 tables in csv format: common_player_info, draft_combine_stats, draft_history, game, game_info, game_summary, inactive_players, line_score, officials,
+other_stats and play_by_play. However, the only table with information about the actual games is the play-by-play one, so I will use that one. It's the biggest table as it contains every play
+from each game, it has 2.2 GB of data. The game_id column seems to codify like this: XXXYYZZZZ where YY is the year of the season, so it seems that the data collected goes from 1996 to 2022. 
 
 ## Description of the application, programming model(s), platform and infrastructure.
-The analysis is performed using the Apache Spark framework, leveraging distributed computing to process large datasets efficiently.
-The application scrapes NBA data for multiple seasons, processes the raw data, and stores it for further analysis. The data is loaded
+The analysis is performed using the Apache Spark framework, leveraging distributed computing to process large datasets efficiently. The data is loaded
 into a Spark DataFrame for computation and sorted to extract insights like top 3-point shooters, field goal accuracy, and overall scoring performance.
 Spark DataFrames provide a high-level abstraction for working with structured data, making it easier to perform transformations, filtering, and aggregations. Also, I
 will use Google Cloud Dataproc clusters to process the dataset and Google Cloud Storage to store the results and scripts. I will use a Debian-based Virtual Machine to 
 test the application locally before deploying it to the cloud.
 
-Exercise 1: Best 10 shooters from the NBA using a formula that combines statistics.
+Exercise 1: Extract scoring stats from play-by-play table.
+From the play_by_play table, I figured out that the "eventmsgtype" column writes 1 for made shots and 2 for missed shots. With this, I filtered through the table and computed the sum
+of made shots and attempted shots for each player. Comparing the two stats, I also obtained the field goal percentage. As a result, I got a table called "scoring_stats.csv" where there's
+a column for the player's name (player1_name), one for their field goals attempted (fga), another one for field goals made (fgm) and another one for field goal percentage (fg_pct).
+
+Exercise 2: Figure out 3 best scorers in the league from the resulting table with a simple formula.
+With the resulting table of the previous exercise, I can compute a formula for each player's stats and put them in order to rank them. The formula that I came up with is the following:
+field goals made * field goal percentage + field goals attempted. It takes into account consistency and efficiency but also volume of contribution with the field goals attempted. In the end, the
+3 best scorers which showed were Lebron James, Kobe Bryant and Dirk Nowitzki. This ranking seems valid as the NBA official site ranks them in the same order within the 6 all-time scoring leaders of the 
+league, and the other 3 played before 1996, so data about their careers is missing.
+
+Exercise 3: Repeat the process but taking into account 3-pointers exclusively, to figure out the best 3-point shooters.
 
 ## Software design (architectural design, code baseline, dependencies…)
 ## Usage (including screenshots that demonstrate how it works).
