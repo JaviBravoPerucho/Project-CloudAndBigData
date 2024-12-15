@@ -78,13 +78,61 @@ First operation: spark-submit --master local[x] scoring_stats.py play_by_play.cs
 2 Threads : 59.42380690574646 seconds
 4 Threads : 61.581401348114014 seconds
 
+Speedup(2 threads) = 1.63
+Speedup(4 threads) = 1.57
+
 Second: spark-submit --master local[x] best_scorers.py scoring_stats/*
 1 Thread : 8.652909517288208 seconds
 2 Threads : 8.245720863342285 seconds
 4 Threads : 8.075222492218018 seconds
 
+Speedup(2 threads) = 1.05
+Speedup(4 threads) = 1.07
+
 ### With dataproc clusters:
+First operation: spark-submit --num-executors x --executor-cores 4 scoring_stats.py $BUCKET/play_by_play.
+csv $BUCKET/results_scoring_stats
+1 Executor :  79.96041631698608 seconds
+2 Executors : 68.24642992019653 seconds
+4 Executors : 68.73236680030823 seconds
+
+Speedup(2 executors) = 1.17
+Speedup(4 executors) = 1.16
+
+Second: spark-submit --num-executors x --executor-cores 4 best_scorers.py $BUCKET/results_scoring_stats part-00000-f49b4436-cc12-46ab-9f57-8300b7d6ec3d-c000.csv 10
+1 Executor : 24.26681900024414 seconds
+2 Executors : 26.980035066604614 seconds
+4 Executors : 25.87271809577942 seconds
+
+Speedup(2 executors) = 0.9
+Speedup(4 executors) = 0.94
+
+### Insights
+1. Local:
+   - For the first operation, increasing threads achieves notable speedup due to parallel processing
+   - For the second operation, the speedup is marginal as the task is likely I/O or memory-bound
+2. Dataproc:
+   - The first operation shows moderate speedup with more executors
+   - The second operation has lower speedup (and even slowdowns) due to increased overhead of coordination between executors for a simpler task
 
 ## Advanced features, like tools/models/platforms not explained in class, advanced functions, techniques to mitigate overheads, challenging implementation aspects...
+At the start, I was struggling to find a good dataset, and the only one I found adequate was the one I used from Kaggle. In the database there is a folder with the tables in
+csv format and an SQLite file, and I thought there was only the SQLite. I started researching on how to manipulate those type of files and even made a few scripts to filter out the 
+tables using Pandas, after I realized that there were also in csv format and I could do it with dataframes as in the labs.
 ## Conclusions, including goals achieved, improvements suggested, lessons learnt, future work, interesting insights…
+### Goals achieved:
+- Successfully extracted field goal and three-point shooting statistics for NBA players from a 2.1GB play-by-play dataset.
+- Developed scoring metrics to identify top scorers and best three-point shooters of the analyzed period.
+- Leveraged Google Cloud Storage (GCS) and Dataproc to process the large dataset efficiently, achieving significant performance improvements over local processing.
+- Seamlessly transitioned from local development to distributed cloud processing.
+- Measured and compared execution times for local and distributed setups, demonstrating the benefits of parallelism.
+
+### Possible improvements:
+- The dataset lacked historical data for players from earlier eras, limiting the scope of analysis. Exploring alternative sources or merging datasets could improve comprehensiveness.
+- The reliance on text-based filtering (e.g., "3PT" in descriptions) is error-prone. A more structured dataset with dedicated columns for shot types would enhance accuracy.
+- While performance improved with additional executors, there was diminishing returns after a certain threshold. A detailed analysis of workload distribution could help optimize resource allocation.
+- Including graphical representations (e.g., bar charts, heatmaps) would improve the presentation of insights and make them more accessible to broader audiences.
+
+In conclusion, this project demonstrated the potential of big data tools and cloud platforms to tackle large-scale analytics tasks while revealing areas for further exploration and refinement.
 ## References.
+- NBA Database - https://www.kaggle.com/datasets/wyattowalsh/basketball
