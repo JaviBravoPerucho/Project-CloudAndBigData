@@ -8,14 +8,14 @@ Analyze and manipulate data from a database about the NBA to get information abo
 ## Need for Big Data processing and Cloud Computing.
 I need to collect a lot of data about NBA players and seasons to classify players and analyze their performance through the years. I will use a database
 from Kaggle that has 2.35 GB, and to manipulate it I will use Spark dataframes. It takes a lot of time to process
-such a big database with information about each basketball game and each player, so using resources from Cloud Computing like Dataproc clusters and Cloud storage
+such a big database with information about each basketball game and each player, so using resources from Cloud Computing like Dataproc clusters and Cloud Storage
 buckets will help me do it faster. 
 
 ## Description of the data: Where does it come from? How was it acquired? What does it mean? What format is it? How big is it (1 GB minimum)?
-It is an database from Kaggle which contains information about 30 teams, 4800+ players and 65000+ games (every game since the NBA started). Its size 
-is 2.35 GB and it contains 11 tables in csv format: common_player_info, draft_combine_stats, draft_history, game, game_info, game_summary, inactive_players, line_score, officials,
-other_stats and play_by_play. However, the only table with information about the actual games is the play-by-play one, so I will use that one. It's the biggest table as it contains every play
-from each game, it has 2.2 GB of data. The game_id column seems to codify like this: XXXYYZZZZ where YY is the year of the season, so it seems that the data collected goes from 1996 to 2022. 
+It is a database from Kaggle which contains information about 30 teams, 4800+ players and 65000+ games. Its size  is 2.35 GB and it contains 11 tables in csv format: common_player_info, 
+draft_combine_stats, draft_history, game, game_info, game_summary, inactive_players, line_score, officials, other_stats and play_by_play. However, the only table with information about
+the actual games is the play-by-play one, so I will use that one. It's the biggest table as it contains every play from each game, it has 2.2 GB of data. The game_id column seems to codify 
+like this: XXXYYZZZZ where YY is the year of the season, so it seems that the data collected goes from 1996 to 2022. 
 
 ## Description of the application, programming model(s), platform and infrastructure.
 The analysis is performed using the Apache Spark framework, leveraging distributed computing to process large datasets efficiently. The data is loaded
@@ -23,6 +23,8 @@ into a Spark DataFrame for computation and sorted to extract insights like top 3
 Spark DataFrames provide a high-level abstraction for working with structured data, making it easier to perform transformations, filtering, and aggregations. Also, I
 will use Google Cloud Dataproc clusters to process the dataset and Google Cloud Storage to store the results and scripts. I will use a Debian-based Virtual Machine to 
 test the application locally before deploying it to the cloud.
+
+Link to the Storage Bucket: https://console.cloud.google.com/storage/browser/final-project-444014?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&authuser=1&cloudshell=true&inv=1&invt=AbkLQg&project=final-project-444014
 
 ### Exercise 1: Extract scoring stats from play-by-play table.
 From the play_by_play table, I figured out that the "eventmsgtype" column writes 1 for made shots and 2 for missed shots. With this, I filtered through the table and computed the sum
@@ -38,7 +40,7 @@ league, and the other 3 played before 1996, so data about their careers is missi
 ### Exercise 3: Repeat the process but taking into account 3-pointers exclusively, to figure out the best 3-point shooters.
 The program is similar, but in this case the column for the event type is the same for normal shots and 3-point shots, so I can't use it to filter through. I need to use the columns "homedescription", 
 "visitordescription" and "neutraldescription", which show the name of the player, the minute of the play and the type of play it was, specifying whether it was an attempted 3-point shot or not. Therefore, 
-I used the spark.sql function contains() combined with the event type column to obtain the 3-point shots made, the 3-point shots attempted and the percentage of accuracy. In the end, the results also correlated
+I used the spark.sql function contains("3PT") combined with the event type column to obtain the 3-point shots made, the 3-point shots attempted and the percentage of accuracy. In the end, the results also correlated
 with the NBA official site rankings.
 
 ## Software design
@@ -81,7 +83,7 @@ First operation: spark-submit --master local[x] scoring_stats.py play_by_play.cs
 Speedup(2 threads) = 1.63
 Speedup(4 threads) = 1.57
 
-Second: spark-submit --master local[x] best_scorers.py scoring_stats/*
+Second: spark-submit --master local[x] best_scorers.py scoring_stats/part-00000-f49b4436-cc12-46ab-9f57-8300b7d6ec3d-c000.csv
 1 Thread : 8.652909517288208 seconds
 2 Threads : 8.245720863342285 seconds
 4 Threads : 8.075222492218018 seconds
@@ -90,8 +92,7 @@ Speedup(2 threads) = 1.05
 Speedup(4 threads) = 1.07
 
 ### With dataproc clusters:
-First operation: spark-submit --num-executors x --executor-cores 4 scoring_stats.py $BUCKET/play_by_play.
-csv $BUCKET/results_scoring_stats
+First operation: spark-submit --num-executors x --executor-cores 4 scoring_stats.py $BUCKET/play_by_play.csv $BUCKET/results_scoring_stats
 1 Executor :  79.96041631698608 seconds
 2 Executors : 68.24642992019653 seconds
 4 Executors : 68.73236680030823 seconds
@@ -121,7 +122,7 @@ csv format and an SQLite file, and I thought there was only the SQLite. I starte
 tables using Pandas, after I realized that there were also in csv format and I could do it with dataframes as in the labs.
 ## Conclusions, including goals achieved, improvements suggested, lessons learnt, future work, interesting insights…
 ### Goals achieved:
-- Successfully extracted field goal and three-point shooting statistics for NBA players from a 2.1GB play-by-play dataset.
+- Successfully extracted field goal and three-point shooting statistics for NBA players from a 2.2GB play-by-play dataset.
 - Developed scoring metrics to identify top scorers and best three-point shooters of the analyzed period.
 - Leveraged Google Cloud Storage (GCS) and Dataproc to process the large dataset efficiently, achieving significant performance improvements over local processing.
 - Seamlessly transitioned from local development to distributed cloud processing.
