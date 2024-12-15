@@ -41,7 +41,7 @@ The program is similar, but in this case the column for the event type is the sa
 I used the spark.sql function contains() combined with the event type column to obtain the 3-point shots made, the 3-point shots attempted and the percentage of accuracy. In the end, the results also correlated
 with the NBA official site rankings.
 
-## Software design (architectural design, code baseline, dependencies…)
+## Software design
 As for the architectural design, the processing of the data could be divided into three modules:
 - A data loading module, where the application reads a large dataset efficiently using Spark's distributed file processing.
 - A transformation module, where the data is filtered and aggregated based on specific criteria (in this case scoring stats).
@@ -60,7 +60,16 @@ elaborated and the resulting tables, and Google Cloud Compute Engine and Google 
 This structure could be useful to try many other operations with the play-by-play table, and carry out an extensive analysis on the performance of the players throughout different time spans, for example
 to write an article about it.
 
-## Usage (including screenshots that demonstrate how it works).
+## Usage
+1. Set up a Cloud Storage bucket to store input and output files, and a Compute Engine instance to run the application.
+2. Upload play_by_play.csv to the Cloud Storage bucket.
+3. Connect to the virtual machine and execute scoring_stats.py : spark-submit scoring_stats.py $BUCKET/play_by_play.csv $BUCKET/scoring_stats
+4. Execute best_scorers.py with the number of players you want in the ranking : spark-submit best_scorers.py $BUCKET/scoring_stats/* 10
+
+This should be the output in the console:
+
+[rank](/screenshots/10best_scorers.png)
+
 ## Performance evaluation (speed-up) on the Cloud and discussion about identified overheads and optimizations done.
 ## Advanced features, like tools/models/platforms not explained in class, advanced functions, techniques to mitigate overheads, challenging implementation aspects...
 ## Conclusions, including goals achieved, improvements suggested, lessons learnt, future work, interesting insights…
