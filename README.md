@@ -7,7 +7,7 @@ Analyze and manipulate data from a database about the NBA to get information abo
 
 ## Need for Big Data processing and Cloud Computing.
 I need to collect a lot of data about NBA players and seasons to classify players and analyze their performance through the years. I will use a database
-from Kaggle that has 2.35 GB, and to manipulate it I will use Spark dataframes. It takes a lot of time to process
+from Kaggle[^1] that has 2.35 GB, and to manipulate it I will use Spark dataframes. It takes a lot of time to process
 such a big database with information about each basketball game and each player, so using resources from Cloud Computing like Dataproc clusters and Cloud Storage
 buckets will help me do it faster. 
 
@@ -34,7 +34,7 @@ a column for the player's name (player1_name), one for their field goals attempt
 ### Exercise 2: Figure out ranking of best scorers in the league from the resulting table with a simple formula.
 With the resulting table of the previous exercise, I can compute a formula for each player's stats and put them in order to rank them. The formula that I came up with is the following:
 field goals made * field goal percentage + field goals attempted. It takes into account consistency and efficiency but also volume of contribution with the field goals attempted. In the end, the
-3 best scorers which showed were Lebron James, Kobe Bryant and Dirk Nowitzki. This ranking seems valid as the NBA official site ranks them in the same order within the 6 all-time scoring leaders of the 
+3 best scorers which showed were Lebron James, Kobe Bryant and Dirk Nowitzki. This ranking seems valid as the NBA official site[^2] ranks them in the same order within the 6 all-time scoring leaders of the 
 league, and the other 3 played before 1996, so data about their careers is missing.
 
 ### Exercise 3: Repeat the process but taking into account 3-pointers exclusively, to figure out the best 3-point shooters.
@@ -132,4 +132,5 @@ tables using Pandas, after I realized that there were also in csv format and I c
 
 In conclusion, this project demonstrated the potential of big data tools and cloud platforms to tackle large-scale analytics tasks while revealing areas for further exploration and refinement.
 ## References.
-- NBA Database - https://www.kaggle.com/datasets/wyattowalsh/basketball
+[^1] NBA Database - https://www.kaggle.com/datasets/wyattowalsh/basketball
+[^2] NBA All Time Leaders - https://www.nba.com/stats/alltime-leaders
