@@ -76,37 +76,33 @@ This should be the output in the console:
 
 ### Locally:
 First operation: spark-submit --master local[x] scoring_stats.py play_by_play.csv scoring_stats
-1 Thread : 96.84541583061218 seconds
-2 Threads : 59.42380690574646 seconds
-4 Threads : 61.581401348114014 seconds
+- 1 Thread : 96.84541583061218 seconds
+- 2 Threads : 59.42380690574646 seconds
+- 4 Threads : 61.581401348114014 seconds
 
-Speedup(2 threads) = 1.63
-Speedup(4 threads) = 1.57
+Speedup(2 threads) = 1.63  |  Speedup(4 threads) = 1.57
 
 Second: spark-submit --master local[x] best_scorers.py scoring_stats/part-00000-f49b4436-cc12-46ab-9f57-8300b7d6ec3d-c000.csv
-1 Thread : 8.652909517288208 seconds
-2 Threads : 8.245720863342285 seconds
-4 Threads : 8.075222492218018 seconds
+- 1 Thread : 8.652909517288208 seconds
+- 2 Threads : 8.245720863342285 seconds
+- 4 Threads : 8.075222492218018 seconds
 
-Speedup(2 threads) = 1.05
-Speedup(4 threads) = 1.07
+Speedup(2 threads) = 1.05  |  Speedup(4 threads) = 1.07
 
 ### With dataproc clusters:
 First operation: spark-submit --num-executors x --executor-cores 4 scoring_stats.py $BUCKET/play_by_play.csv $BUCKET/results_scoring_stats
-1 Executor :  79.96041631698608 seconds
-2 Executors : 68.24642992019653 seconds
-4 Executors : 68.73236680030823 seconds
+- 1 Executor :  79.96041631698608 seconds
+- 2 Executors : 68.24642992019653 seconds
+- 4 Executors : 68.73236680030823 seconds
 
-Speedup(2 executors) = 1.17
-Speedup(4 executors) = 1.16
+Speedup(2 executors) = 1.17  |  Speedup(4 executors) = 1.16
 
 Second: spark-submit --num-executors x --executor-cores 4 best_scorers.py $BUCKET/results_scoring_stats part-00000-f49b4436-cc12-46ab-9f57-8300b7d6ec3d-c000.csv 10
-1 Executor : 24.26681900024414 seconds
-2 Executors : 26.980035066604614 seconds
-4 Executors : 25.87271809577942 seconds
+- 1 Executor : 24.26681900024414 seconds
+- 2 Executors : 26.980035066604614 seconds
+- 4 Executors : 25.87271809577942 seconds
 
-Speedup(2 executors) = 0.9
-Speedup(4 executors) = 0.94
+Speedup(2 executors) = 0.9  |  Speedup(4 executors) = 0.94
 
 ### Insights
 1. Local:
