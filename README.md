@@ -132,5 +132,5 @@ tables using Pandas, after I realized that there were also in csv format and I c
 
 In conclusion, this project demonstrated the potential of big data tools and cloud platforms to tackle large-scale analytics tasks while revealing areas for further exploration and refinement.
 ## References.
-[^1] NBA Database - https://www.kaggle.com/datasets/wyattowalsh/basketball
-[^2] NBA All Time Leaders - https://www.nba.com/stats/alltime-leaders
+[^1]: NBA Database - https://www.kaggle.com/datasets/wyattowalsh/basketball
+[^2]: NBA All Time Leaders - https://www.nba.com/stats/alltime-leaders
